@@ -1,9 +1,19 @@
-/*--------------------------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
- *-------------------------------------------------------------------------------------------------------------*/
+extern crate itertools;
+
+use itertools::Itertools;
+use std::fs;
 
 fn main() {
-    let name = "VS Code Remote - Containers";
-    println!("Hello, {}!", name);
+    let filepath = "files/rosalind_dna_dataset.txt";
+    let dna = fs::read_to_string(filepath)
+        .expect("Something went wrong reading the file");
+    let res = dna
+        .chars()
+        .sorted()
+        .group_by(|c| *c)
+        .into_iter()
+        .map(|(_group, records)| records.count().to_string())
+        .collect::<Vec<String>>()
+        .join(" ");
+    println!("{}", res);
 }
